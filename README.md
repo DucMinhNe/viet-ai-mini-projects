@@ -165,4 +165,4 @@ This makes the repository useful for learning, portfolio review, and interview d
 
 ```text
 Python AI mini tools for Vietnamese NLP, document scanning, local AI assistants, semantic search, and anomaly detection.
-```
+``` 
