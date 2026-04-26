@@ -1,0 +1,9 @@
+title,content
+Customer Churn Prediction,Machine learning models can estimate which customers may leave a subscription product by analyzing usage frequency support tickets and payment behavior.
+Recommendation Systems,Recommendation engines rank products articles or videos by learning patterns from user behavior item metadata and similarity signals.
+AI Knowledge Search,Retrieval systems use document ranking vector search and language models to help users find relevant answers in large knowledge bases.
+Fraud Detection,Fraud detection systems monitor transactions for unusual patterns and assign risk scores for review.
+Demand Forecasting,Forecasting models predict future demand from historical sales holidays promotions and market signals.
+Support Ticket Routing,Text classification can automatically assign support tickets to the correct team based on issue descriptions and customer intent.
+Computer Vision Quality Control,Image classification can identify product defects on a manufacturing line by comparing visual patterns.
+Personalized Learning,Adaptive education tools recommend lessons based on student progress strengths and knowledge gaps.
