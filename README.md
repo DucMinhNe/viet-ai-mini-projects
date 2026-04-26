@@ -28,6 +28,12 @@ python3 vietnamese-news-summarizer/main.py
 python3 viet-ai-assistant/main.py
 ```
 
+Run smoke tests for the offline demos:
+
+```bash
+python3 scripts/run_smoke_tests.py
+```
+
 ## Why This Repository Exists
 
 The goal is to show practical AI foundations without hiding everything behind large frameworks. The code is intentionally compact and readable, so someone reviewing the repository can quickly understand:
