@@ -1,0 +1,12 @@
+transcript,expected_intent
+hom nay thoi tiet o Ha Noi co mua khong,weather_query
+du bao ngay mai Sai Gon co nang khong,weather_query
+nhac toi goi khach hang luc 3 gio chieu,calendar_reminder
+dat lich cuoc hop voi team vao thu hai,calendar_reminder
+mo nhac lo-fi de lam viec,music_control
+tang am luong bai hat nay,music_control
+bat den phong khach giup toi,smart_home
+tat dieu hoa luc 10 gio toi,smart_home
+tim quan pho ngon gan day,web_search
+tra cuu diem tin cong nghe viet nam,web_search
+toi muon dat ve may bay,unknown
