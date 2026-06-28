@@ -113,7 +113,11 @@ def extract_fields(text):
 
     for field, pattern in FIELD_PATTERNS.items():
         match = pattern.search(normalized)
-        fields[field] = match.group(1) if match else None
+        # Match the labels against the accent-folded text, but read the value
+        # back from the original so casing and accents in fields like the
+        # invoice number survive. normalize_text maps one char to one char, so
+        # the match offsets line up with the source string.
+        fields[field] = text[match.start(1):match.end(1)] if match else None
 
     if fields["total_vnd"]:
         fields["total_vnd"] = parse_amount(fields["total_vnd"])
