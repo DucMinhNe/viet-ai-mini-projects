@@ -41,7 +41,11 @@ def classify(text):
     scores = {}
 
     for intent, keywords in INTENT_KEYWORDS.items():
-        score = sum(len(keyword.split()) for keyword in keywords if keyword in normalized)
+        score = sum(
+            len(keyword.split())
+            for keyword in keywords
+            if re.search(rf"\b{re.escape(keyword)}\b", normalized)
+        )
         if score:
             scores[intent] = score
 
