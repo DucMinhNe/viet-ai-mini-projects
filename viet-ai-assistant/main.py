@@ -47,6 +47,9 @@ def choose_model(models, requested_model=None):
     if requested_model:
         if requested_model in models:
             return requested_model
+        for model in models:
+            if model.startswith(requested_model + ":"):
+                return model
         raise OllamaError(f"Requested model `{requested_model}` is not installed locally.")
 
     for preferred in PREFERRED_MODELS:
