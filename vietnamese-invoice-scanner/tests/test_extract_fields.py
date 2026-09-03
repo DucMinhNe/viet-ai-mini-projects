@@ -26,6 +26,23 @@ class ExtractFieldsTests(unittest.TestCase):
         fields = invoice_main.extract_fields(text)
         self.assertEqual(fields["invoice_number"], "SV-2026-A7")
 
+    def test_branch_tax_code_with_hyphen_is_preserved(self):
+        text = "Mã số thuế: 0101234567-001\nSố hóa đơn: HD-123\n"
+        fields = invoice_main.extract_fields(text)
+        self.assertEqual(fields["tax_code"], "0101234567-001")
+
+    def test_zero_total_vnd_counted_in_confidence(self):
+        text = (
+            "Công ty TNHH Dịch vụ\n"
+            "Mã số thuế: 0101234567\n"
+            "Số hóa đơn: HD-001\n"
+            "Ngày: 01/09/2026\n"
+            "Tổng cộng: 0 VND\n"
+        )
+        fields = invoice_main.extract_fields(text)
+        self.assertEqual(fields["total_vnd"], 0)
+        self.assertEqual(fields["confidence"], 1.0)
+
 
 if __name__ == "__main__":
     unittest.main()
