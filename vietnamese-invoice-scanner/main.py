@@ -14,8 +14,8 @@ DEFAULT_PATH = (
 FIELD_PATTERNS = {
     "tax_code": re.compile(r"(?:ma so thue|mst|tax code)\s*[:\-]?\s*([0-9]{10}(?:-[0-9]{3})?|[0-9]{13})", re.I),
     "invoice_number": re.compile(r"(?:so hoa don|invoice no|invoice number)\s*[:\-]?\s*([A-Z0-9\-]+)", re.I),
-    "date": re.compile(r"(?:ngay|date)\s*[:\-]?\s*(\d{1,2}[\/\-]\d{1,2}[\/\-]\d{4})", re.I),
-    "total_vnd": re.compile(r"(?:tong cong|total|thanh toan)\s*[:\-]?\s*([0-9\.,]+)\s*(?:vnd|dong)?", re.I),
+    "date": re.compile(r"(?:ngay|date)\s*[:\-]?\s*(\d{1,2}\s+thang\s+\d{1,2}\s+nam\s+\d{4}|\d{4}[\/\-]\d{1,2}[\/\-]\d{1,2}|\d{1,2}[\/\-]\d{1,2}[\/\-]\d{4})", re.I),
+    "total_vnd": re.compile(r"(?:tong cong|tong thanh toan|tong tien|thanh tien|total|thanh toan)\s*[:\-]?\s*([0-9\., ]+)", re.I),
 }
 
 
