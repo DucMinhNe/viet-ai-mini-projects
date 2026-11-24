@@ -43,6 +43,30 @@ class ExtractFieldsTests(unittest.TestCase):
         self.assertEqual(fields["total_vnd"], 0)
         self.assertEqual(fields["confidence"], 1.0)
 
+    def test_statutory_date_vietnamese_format_is_preserved(self):
+        text = (
+            "Công ty Cổ phần Sao Kim\n"
+            "Mã số thuế: 0312345678\n"
+            "Số hóa đơn: HD-2026-9999\n"
+            "Ngày 15 tháng 04 năm 2026\n"
+            "Tổng tiền: 25.000.000 VND\n"
+        )
+        fields = invoice_main.extract_fields(text)
+        self.assertEqual(fields["date"], "15 tháng 04 năm 2026")
+        self.assertEqual(fields["total_vnd"], 25000000)
+
+    def test_iso_date_format_and_thanh_tien_are_preserved(self):
+        text = (
+            "Công ty TNHH Logistics\n"
+            "Mã số thuế: 0312345678\n"
+            "Số hóa đơn: HD-2026-0001\n"
+            "Date: 2026-04-15\n"
+            "Thành tiền: 10.500.000 VND\n"
+        )
+        fields = invoice_main.extract_fields(text)
+        self.assertEqual(fields["date"], "2026-04-15")
+        self.assertEqual(fields["total_vnd"], 10500000)
+
 
 if __name__ == "__main__":
     unittest.main()
