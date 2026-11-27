@@ -67,6 +67,30 @@ class ExtractFieldsTests(unittest.TestCase):
         self.assertEqual(fields["date"], "2026-04-15")
         self.assertEqual(fields["total_vnd"], 10500000)
 
+    def test_extract_vendor_skips_accented_invoice_header_titles(self):
+        text = (
+            "HÓA ĐƠN GIÁ TRỊ GIA TĂNG\n"
+            "(Bản thể hiện của hóa đơn điện tử)\n"
+            "Công ty Cổ phần Công nghệ Minh Lê\n"
+            "Mã số thuế: 0312345678\n"
+            "Số hóa đơn: HD-2026-0042\n"
+            "Ngày: 27/11/2026\n"
+            "Tổng cộng: 1.000.000 VND\n"
+        )
+        fields = invoice_main.extract_fields(text)
+        self.assertEqual(fields["vendor"], "Công ty Cổ phần Công nghệ Minh Lê")
+
+    def test_dot_delimited_date_format_is_extracted(self):
+        text = (
+            "Công ty TNHH Dịch vụ Số\n"
+            "Mã số thuế: 0312345678\n"
+            "Số hóa đơn: HD-2026-0099\n"
+            "Ngày: 27.11.2026\n"
+            "Tổng cộng: 500.000 VND\n"
+        )
+        fields = invoice_main.extract_fields(text)
+        self.assertEqual(fields["date"], "27.11.2026")
+
 
 if __name__ == "__main__":
     unittest.main()
