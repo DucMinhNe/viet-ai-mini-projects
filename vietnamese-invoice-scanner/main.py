@@ -12,7 +12,7 @@ DEFAULT_PATH = (
 
 
 FIELD_PATTERNS = {
-    "tax_code": re.compile(r"(?:ma so thue|mst|tax code)\s*[:\-]?\s*([0-9]{10}(?:-[0-9]{3})?|[0-9]{13})", re.I),
+    "tax_code": re.compile(r"(?:ma so thue|mst|tax code)\s*[:\-]?\s*([0-9]{13}|[0-9]{10}(?:\s*-\s*[0-9]{3})?)", re.I),
     "invoice_number": re.compile(r"(?:so hoa don|invoice no|invoice number)\s*[:\-]?\s*([A-Z0-9\-]+)", re.I),
     "date": re.compile(r"(?:ngay|date)\s*[:\-]?\s*(\d{1,2}\s+thang\s+\d{1,2}\s+nam\s+\d{4}|\d{4}[\/\-\.]\d{1,2}[\/\-\.]\d{1,2}|\d{1,2}[\/\-\.]\d{1,2}[\/\-\.]\d{4})", re.I),
     "total_vnd": re.compile(r"(?:tong cong|tong thanh toan|tong tien|thanh tien|total|thanh toan)\s*[:\-]?\s*([0-9\., ]+)", re.I),
@@ -93,14 +93,39 @@ def normalize_text(text):
     return "".join(replacements.get(char, char) for char in lowered)
 
 
+VENDOR_HEADER_PREFIXES = (
+    "hoa don",
+    "invoice",
+    "ban the hien",
+    "mau so",
+    "ky hieu",
+    "so hoa don",
+    "so:",
+    "lien ",
+    "phieu xuat kho",
+)
+VENDOR_LABEL_PREFIX_RE = re.compile(
+    r"^(?:don vi ban(?: hang)?|nguoi ban|ten (?:nguoi ban|don vi ban)|seller|vendor)\s*[:\-]\s*(.+)$",
+    re.I,
+)
+
+
 def extract_vendor(lines):
     for line in lines:
         cleaned = line.strip()
         if not cleaned:
             continue
         cleaned_norm = normalize_text(cleaned).strip("()[]{} '\"`")
-        if not cleaned_norm.startswith(("hoa don", "invoice", "ban the hien")):
-            return cleaned
+        if any(cleaned_norm.startswith(prefix) for prefix in VENDOR_HEADER_PREFIXES):
+            continue
+        label_match = VENDOR_LABEL_PREFIX_RE.match(cleaned_norm)
+        if label_match:
+            prefix_len = len(cleaned_norm) - len(label_match.group(1))
+            vendor_name = cleaned[prefix_len:].strip()
+            if vendor_name:
+                return vendor_name
+            continue
+        return cleaned
     return None
 
 
