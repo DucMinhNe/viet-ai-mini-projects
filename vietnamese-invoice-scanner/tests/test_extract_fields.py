@@ -91,6 +91,33 @@ class ExtractFieldsTests(unittest.TestCase):
         fields = invoice_main.extract_fields(text)
         self.assertEqual(fields["date"], "27.11.2026")
 
+    def test_extract_vendor_skips_template_and_serial_headers_and_strips_vendor_label(self):
+        text = (
+            "Mẫu số: 1/001\n"
+            "Ký hiệu: 1C26TML\n"
+            "HÓA ĐƠN GIÁ TRỊ GIA TĂNG\n"
+            "(Bản thể hiện của hóa đơn điện tử)\n"
+            "Đơn vị bán hàng: Công ty Cổ phần Công nghệ Sao Việt\n"
+            "Mã số thuế: 0101234567 - 001\n"
+            "Số hóa đơn: HD-2026-0042\n"
+            "Ngày: 28/11/2026\n"
+            "Tổng cộng: 1.000.000 VND\n"
+        )
+        fields = invoice_main.extract_fields(text)
+        self.assertEqual(fields["vendor"], "Công ty Cổ phần Công nghệ Sao Việt")
+        self.assertEqual(fields["tax_code"], "0101234567 - 001")
+
+    def test_13_digit_tax_code_is_not_truncated(self):
+        text = (
+            "Công ty TNHH Viễn Thông\n"
+            "Mã số thuế: 0101234567890\n"
+            "Số hóa đơn: HD-2026-0099\n"
+            "Ngày: 28/11/2026\n"
+            "Tổng cộng: 500.000 VND\n"
+        )
+        fields = invoice_main.extract_fields(text)
+        self.assertEqual(fields["tax_code"], "0101234567890")
+
 
 if __name__ == "__main__":
     unittest.main()
